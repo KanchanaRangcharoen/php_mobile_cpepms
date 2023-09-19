@@ -13,7 +13,7 @@ require "connect.php";
         mysqli_set_charset($conn, "utf8");
 
         // เตรียมคำสั่ง SQL
-        $sql = "SELECT * FROM appoint 
+        $sql = "SELECT * FROM `appoint` 
                 WHERE (DATE_FORMAT(appoint_date, '%Y%m%d') >= CONCAT(YEAR(CURDATE()) + 543, LPAD(MONTH(CURDATE()), 2, '0'), LPAD(DAY(CURDATE()), 2, '0'))) 
                 AND ((group_id = (SELECT group_id FROM student WHERE student_id = ?)) OR (group_id IS NULL)) 
                 ORDER BY appoint_date ASC";

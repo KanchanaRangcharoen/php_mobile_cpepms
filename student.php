@@ -12,7 +12,7 @@ if (isset($_POST['student_id'])) {
     // Set UTF-8 encoding
     mysqli_set_charset($conn, "utf8");
 
-    $sql = "SELECT * FROM student WHERE student_id = ?";
+    $sql = "SELECT * FROM `student` WHERE student_id = ?";
 
     // Prepare the SQL statement
     $stmt = mysqli_prepare($conn, $sql);

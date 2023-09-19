@@ -10,7 +10,7 @@ if (!$conn) {
 mysqli_set_charset($conn, "utf8");
 
 // Query to get data from the 'timetest' table
-$sql = "SELECT * FROM timeTest
+$sql = "SELECT * FROM `timeTest`
 WHERE DATE_FORMAT(timeTest_date, '%Y%m%d') >= CONCAT(YEAR(CURDATE()) + 543, LPAD(MONTH(CURDATE()), 2, '0'), LPAD(DAY(CURDATE()), 2, '0'))
 ORDER BY timeTest_date ASC, start_time ASC";
 $result = $conn->query($sql);
@@ -28,7 +28,7 @@ if (!$result) {
     // Function to retrieve project by ID
     function giveProjectById($conn, $project_id)
     {
-        $sql = "SELECT * FROM project WHERE project_id = ?";
+        $sql = "SELECT * FROM `project` WHERE project_id = ?";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param('i', $project_id); // 'i' หมายถึง integer
         $stmt->execute();
@@ -38,7 +38,7 @@ if (!$result) {
     // Function to retrieve student by ID
     function giveStudentById($conn, $student_id)
     {
-        $sql = "SELECT * FROM student WHERE student_id = ?";
+        $sql = "SELECT * FROM `student` WHERE student_id = ?";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param('i', $student_id); // 'i' หมายถึง integer
         $stmt->execute();
@@ -48,7 +48,7 @@ if (!$result) {
     // Function to retrieve teacher by ID
     function giveTeacherById($conn, $teacher_id)
     {
-        $sql = "SELECT * FROM teacher WHERE teacher_id = ?";
+        $sql = "SELECT * FROM `teacher` WHERE teacher_id = ?";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param('i', $teacher_id); // 'i' หมายถึง integer
         $stmt->execute();

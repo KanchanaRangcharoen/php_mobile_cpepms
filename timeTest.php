@@ -10,7 +10,7 @@ if (!$conn) {
 mysqli_set_charset($conn, "utf8");
 
 // Query to get data from the 'timetest' table
-$sql = "SELECT * FROM timeTest
+$sql = "SELECT * FROM `timeTest`
         WHERE DATE_FORMAT(timeTest_date, '%Y%m%d') >= CONCAT(YEAR(CURDATE()) + 543, LPAD(MONTH(CURDATE()), 2, '0'), LPAD(DAY(CURDATE()), 2, '0'))
         ORDER BY timeTest_date ASC, start_time ASC";
 

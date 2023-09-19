@@ -12,7 +12,7 @@ if (isset($_POST['project_id'])) {
     // Set UTF-8 encoding
     mysqli_set_charset($conn, "utf8");
 
-    $sql = "SELECT * FROM project WHERE project_id = ?";
+    $sql = "SELECT * FROM `project` WHERE project_id = ?";
 
     // Prepare the SQL statement
     $stmt = mysqli_prepare($conn, $sql);

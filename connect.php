@@ -3,9 +3,9 @@ header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE");
 header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
 
-$db_name = "cpepms";
-$db_user = "root";
-$db_pass = "";
+$db_name = "zmlszwhh_cpepms";
+$db_user = "zmlszwhh_cpepms";
+$db_pass = "Nanbowin_2030";
 $db_host = "localhost";
 
 global $conn;

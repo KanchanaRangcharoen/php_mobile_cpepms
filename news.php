@@ -8,7 +8,7 @@ if (!$conn) {
     mysqli_set_charset($conn, "utf8");
 
     // Query to get data from the 'news' table
-    $sql = "SELECT * FROM news WHERE year = (SELECT year FROM defaultSystem WHERE default_system_id = ?) and term = (SELECT term FROM defaultSystem WHERE default_system_id = ?)
+    $sql = "SELECT * FROM `news` WHERE year = (SELECT year FROM `defaultSystem` WHERE default_system_id = ?) and term = (SELECT term FROM defaultSystem WHERE default_system_id = ?)
     ORDER BY news_date DESC ";
 
 

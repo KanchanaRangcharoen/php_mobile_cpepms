@@ -8,7 +8,7 @@ if (!$conn) {
     mysqli_set_charset($conn, "utf8");
 
     // Query to get data from the 'appointST' table
-    $sql = "SELECT * FROM appoint WHERE (DATE_FORMAT(appoint_date, '%Y%m%d') >= CONCAT(YEAR(CURDATE()) + 543, LPAD(MONTH(CURDATE()), 2, '0'), LPAD(DAY(CURDATE()), 2, '0')))
+    $sql = "SELECT * FROM `appoint` WHERE (DATE_FORMAT(appoint_date, '%Y%m%d') >= CONCAT(YEAR(CURDATE()) + 543, LPAD(MONTH(CURDATE()), 2, '0'), LPAD(DAY(CURDATE()), 2, '0')))
     ORDER BY appoint_date ASC, group_id ASC ";
 
     $stmt = $conn->prepare($sql);

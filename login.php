@@ -18,7 +18,7 @@ if (!$conn) {
         echo json_encode(["error" => "กรุณากรอก Password"]);
     } else {
         // Prepare the SQL statement with placeholders to prevent SQL injection
-        $sql_student = "SELECT * FROM student WHERE student_id = ?;";
+        $sql_student = "SELECT * FROM `student` WHERE student_id = ?;";
         $stmt_student = mysqli_prepare($conn, $sql_student);
         mysqli_stmt_bind_param($stmt_student, "s", $username);
         mysqli_stmt_execute($stmt_student);
@@ -39,7 +39,7 @@ if (!$conn) {
                 echo json_encode(["error" => "รหัสผ่านไม่ถูกต้อง"]);
             }
         } else {
-            $sql_teacher = "SELECT * FROM teacher WHERE teacher_id = ?;";
+            $sql_teacher = "SELECT * FROM `teacher` WHERE teacher_id = ?;";
             $stmt_teacher = mysqli_prepare($conn, $sql_teacher);
             mysqli_stmt_bind_param($stmt_teacher, "s", $username);
             mysqli_stmt_execute($stmt_teacher);

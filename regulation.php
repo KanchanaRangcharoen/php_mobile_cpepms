@@ -8,7 +8,7 @@ if (!$conn) {
     mysqli_set_charset($conn, "utf8");
 
     // Query to get data from the 'regulation' table
-    $sql = "SELECT * FROM regulation 
+    $sql = "SELECT * FROM `regulation` 
         WHERE year = (SELECT year FROM defaultSystem WHERE default_system_id = ?) 
         AND term = (SELECT term FROM defaultSystem WHERE default_system_id = ?)
         ORDER BY regulation_text ";
