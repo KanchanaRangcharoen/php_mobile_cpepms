@@ -9,8 +9,8 @@ if (!$conn) {
 
     // Query to get data from the 'regulation' table
     $sql = "SELECT * FROM `regulation` 
-        WHERE year = (SELECT year FROM defaultSystem WHERE default_system_id = ?) 
-        AND term = (SELECT term FROM defaultSystem WHERE default_system_id = ?)
+        WHERE year = (SELECT year FROM `defaultsystem` WHERE default_system_id = ?) 
+        AND term = (SELECT term FROM `defaultsystem` WHERE default_system_id = ?)
         ORDER BY regulation_text ";
 
     $stmt = $conn->prepare($sql);

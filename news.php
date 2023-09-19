@@ -1,6 +1,6 @@
 <?php
 require "connect.php";
-
+header('Content-Type: application/json; charset=utf-8');
 if (!$conn) {
     echo "connection error";
 } else {
@@ -8,7 +8,7 @@ if (!$conn) {
     mysqli_set_charset($conn, "utf8");
 
     // Query to get data from the 'news' table
-    $sql = "SELECT * FROM `news` WHERE year = (SELECT year FROM `defaultSystem` WHERE default_system_id = ?) and term = (SELECT term FROM defaultSystem WHERE default_system_id = ?)
+    $sql = "SELECT * FROM `news` WHERE year = (SELECT year FROM `defaultsystem` WHERE default_system_id = ?) and term = (SELECT term FROM `defaultsystem` WHERE default_system_id = ?)
     ORDER BY news_date DESC ";
 
 
@@ -25,7 +25,7 @@ if (!$conn) {
     }
 
     // Return JSON response with UTF-8 encoding
-    header('Content-Type: application/json; charset=utf-8');
+   
     echo json_encode($newsList, JSON_UNESCAPED_UNICODE);
 }
 
