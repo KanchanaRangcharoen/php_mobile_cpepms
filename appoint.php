@@ -1,60 +1,86 @@
 <?php
-// ตรวจสอบว่าผู้ใช้ล็อกอินหรือยัง
+require "connect.php";
 session_start();
 
-if (!isset($_SESSION['student_id'])) {
-    // ถ้ายังไม่ได้ล็อกอิน ให้เปลี่ยนเส้นทางการเข้าถึงหน้านี้ เช่น ไปหน้า login
-    header("Location: login.php");
-    exit();
+if (!$conn) {
+    echo "connection error";
 }
 
-// ต่อไปให้ดำเนินการดึงข้อมูลและประมวลผลต่อไป
-require "connect.php"; // เชื่อมต่อฐานข้อมูล
+// Set UTF-8 encoding
+mysqli_set_charset($conn, "utf8");
 
-// ตรวจสอบการเชื่อมต่อ
-if (!$con) {
-    echo "connection error";
+// Query to get data from the 'timetest' table
+$sql = "SELECT * FROM timeTest
+WHERE DATE_FORMAT(timeTest_date, '%Y%m%d') >= CONCAT(YEAR(CURDATE()) + 543, LPAD(MONTH(CURDATE()), 2, '0'), LPAD(DAY(CURDATE()), 2, '0'))
+ORDER BY timeTest_date ASC, start_time ASC";
+$result = $conn->query($sql);
+
+// Check if the query was successful
+if (!$result) {
+    echo "query error";
 } else {
-    // ตั้งค่าการเข้ารหัส UTF-8
-    mysqli_set_charset($con, "utf8");
+    // Fetch all rows as an associative array
+    $timeTest = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
-    // คำสั่ง SQL เพื่อดึงข้อมูลจากตาราง 'appoint'
-    $sql = "SELECT * FROM appoint WHERE (DATE_FORMAT(appoint_date, '%Y%m%d') >= CONCAT(YEAR(CURDATE()) + 543, LPAD(MONTH(CURDATE()), 2, '0'), LPAD(DAY(CURDATE()), 2, '0'))) and ((group_id = (SELECT group_id FROM `student` WHERE student_id = ?)) or (group_id is null)) ORDER BY appoint_date ASC";
+    // Close the database connection
+    mysqli_close($conn);
 
-    // ตรวจสอบว่ามี 'student_id' ในเซสชันหรือไม่
-    if (isset($_SESSION['student_id'])) {
-        $studentId = $_SESSION['student_id'];
-    } else {
-        echo "Undefined 'student_id' in session";
-        exit();
+    // Function to retrieve project by ID
+    function giveProjectById($conn, $project_id)
+    {
+        $sql = "SELECT * FROM project WHERE project_id = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param('i', $project_id); // 'i' หมายถึง integer
+        $stmt->execute();
+        return $stmt->get_result()->fetch_assoc();
     }
 
-    // เตรียมและผูกพารามิเตอร์
-    $stmt = $con->prepare($sql);
-    $stmt->bind_param('s', $studentId);
-
-    // ประมวลผลคำสั่ง
-    $stmt->execute();
-
-    // รับผลลัพธ์
-    $result = $stmt->get_result();
-
-    // ดึงข้อมูลเป็นอาร์เรย์แบบ associative
-    $appoint = array();
-    while ($row = $result->fetch_assoc()) {
-        $appoint[] = $row;
+    // Function to retrieve student by ID
+    function giveStudentById($conn, $student_id)
+    {
+        $sql = "SELECT * FROM student WHERE student_id = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param('i', $student_id); // 'i' หมายถึง integer
+        $stmt->execute();
+        return $stmt->get_result()->fetch_assoc();
     }
-    // ตรวจสอบว่ามีข้อมูลใน $appoint หรือไม่
-if (empty($appoint)) {
-    echo json_encode(["error" => "ไม่พบข้อมูล"]);
-} else {
-    // ปิดการเชื่อมต่อ
-    $con->close();
 
-    // ตั้งค่า Header
+    // Function to retrieve teacher by ID
+    function giveTeacherById($conn, $teacher_id)
+    {
+        $sql = "SELECT * FROM teacher WHERE teacher_id = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param('i', $teacher_id); // 'i' หมายถึง integer
+        $stmt->execute();
+        return $stmt->get_result()->fetch_assoc();
+    }
+
+    // Function to format teacher position
+    function giveTeacherPositionById($Position)
+    {
+        switch ($Position) {
+            case "รองศาสตราจารย์":
+                return "รศ.";
+                break;
+            case "ผู้ช่วยศาสตราจารย์":
+                return "ผศ.";
+                break;
+            case "ผู้ช่วยศาสตราจารย์ ดร.":
+                return "ผศ.ดร.";
+                break;
+            case "อาจารย์":
+                return "อ.";
+                break;
+            case "ดร.":
+                return "ดร.";
+                break;
+            default:
+                return $Position;
+        }
+    }
+
+    // Return JSON response with UTF-8 encoding
     header('Content-Type: application/json; charset=utf-8');
-    // ส่งข้อมูล JSON กลับไปยังแอปพลิเคชัน Flutter
-    echo json_encode($appoint, JSON_UNESCAPED_UNICODE);
-}}
+    echo json_encode($timeTest, JSON_UNESCAPED_UNICODE);
+}
 ?>
->>>>>>> 0017b53 (2/9/2566)
